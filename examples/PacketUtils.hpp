@@ -54,6 +54,24 @@ public:
         return packet;
     }
 
+    // Constructs a high level commander startTrajectory packet
+    static bitcraze::crazyflieLinkCpp::Packet startTrajectoryCommand(bool relative, bool reversed, uint8_t trajectoryId, float timescale) {
+        const uint8_t size = 9;
+        std::array<uint8_t, size> buffer;
+        buffer[0] = 0xFF;
+        uint8_t index = 1;
+        index += pack(buffer.data(), index, (uint8_t)5);    // Command (Takeoff = 7)
+        index += pack(buffer.data(), index, (uint8_t)0);    // Group Mask (0 = all groups)
+        index += pack(buffer.data(), index, relative);      // set to true, if trajectory should be shifted to current setpoint
+        index += pack(buffer.data(), index, reversed);      // set to true, if trajectory should be executed in reverse
+        index += pack(buffer.data(), index, trajectoryId);  // id of the trajectory (previously defined by COMMAND_DEFINE_TRAJECTORY)
+        index += pack(buffer.data(), index, timescale);     // time factor; 1 = original speed; >1: slower; <1: faster
+        
+        bitcraze::crazyflieLinkCpp::Packet packet(buffer.data(), size);
+        packet.setPort((uint8_t)0x08);          // PORT 8 = HIGH_LEVEL_COMMANDER
+        return packet;
+    }
+
 private:
     static size_t pack(uint8_t* buffer, uint8_t index, float value) {
         union {
