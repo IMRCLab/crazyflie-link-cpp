@@ -56,7 +56,7 @@ public:
 
     // Constructs a high level commander startTrajectory packet
     static bitcraze::crazyflieLinkCpp::Packet startTrajectoryCommand(bool relative, bool reversed, uint8_t trajectoryId, float timescale) {
-        const uint8_t size = 9;
+        const uint8_t size = 10;
         std::array<uint8_t, size> buffer;
         buffer[0] = 0xFF;
         uint8_t index = 1;
