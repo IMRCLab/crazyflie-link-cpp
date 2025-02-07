@@ -69,6 +69,24 @@ public:
         
         bitcraze::crazyflieLinkCpp::Packet packet(buffer.data(), size);
         packet.setPort((uint8_t)0x08);          // PORT 8 = HIGH_LEVEL_COMMANDER
+        packet.setChannel((uint8_t) 0x00);
+        return packet;
+    }
+
+    // Constructs a legacy commnd pcket
+    static bitcraze::crazyflieLinkCpp::Packet cmdLegacy(float roll, float pitch, float yawrate, uint16_t thrust) {
+        const uint8_t size = 14;
+        std::array<uint8_t, size> buffer;
+        buffer[0] = 0xFF;
+        uint8_t index = 1;
+        index += pack(buffer.data(), index, roll);
+        index += pack(buffer.data(), index, pitch);
+        index += pack(buffer.data(), index, yawrate);
+        index += pack(buffer.data(), index, thrust);
+        
+        bitcraze::crazyflieLinkCpp::Packet packet(buffer.data(), size);
+        packet.setPort((uint8_t)0x03);          // PORT 3
+        packet.setChannel((uint8_t) 0x00);
         return packet;
     }
 
@@ -84,6 +102,17 @@ private:
         buffer[index + 2] = converter.bytes[2];
         buffer[index + 3] = converter.bytes[3];
         return 4;
+    }
+
+    static size_t pack(uint8_t* buffer, uint8_t index, uint16_t value) {
+        union {
+            uint16_t value;
+            unsigned char bytes[2];
+        } converter;
+        converter.value = value;
+        buffer[index + 0] = converter.bytes[0];
+        buffer[index + 1] = converter.bytes[1];
+        return 2;
     }
 
     static size_t pack(uint8_t* buffer, uint8_t index, uint8_t value) {

@@ -137,6 +137,14 @@ if (BUILD_CPP_EXAMPLES)
   target_link_libraries(example_broadcast_and_console
     crazyflieLinkCpp
   )
+
+  # example_unicast
+  add_executable(example_unicast
+    examples/unicast.cpp
+  )
+  target_link_libraries(example_unicast
+    crazyflieLinkCpp
+  )
 endif()
 
 if (BUILD_PYTHON_BINDINGS)
