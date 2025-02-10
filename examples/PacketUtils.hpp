@@ -75,7 +75,7 @@ public:
 
     // Constructs a legacy commnd pcket
     static bitcraze::crazyflieLinkCpp::Packet cmdLegacy(float roll, float pitch, float yawrate, uint16_t thrust) {
-        const uint8_t size = 14;
+        const uint8_t size = 15;
         std::array<uint8_t, size> buffer;
         buffer[0] = 0xFF;
         uint8_t index = 1;

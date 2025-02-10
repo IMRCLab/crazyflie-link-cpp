@@ -8,7 +8,7 @@ using namespace bitcraze::crazyflieLinkCpp;
 
 int main()
 {
-    Connection connection("radio://*/80/2M");
+    Connection connection("radio://*/80/2M/E7E7E7E7E7");
 
 
     for (int i = 0; i < 10; ++i) {
